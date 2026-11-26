@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Bricolage_Grotesque, Figtree } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Figtree, Fraunces } from "next/font/google";
 import Link from "next/link";
 import { CookieBanner } from "@/components/CookieBanner";
 import { getCart } from "@/lib/cart";
@@ -7,8 +7,15 @@ import { getCustomer } from "@/lib/customer-auth";
 import { siteLogo, siteName } from "@/lib/site";
 import "./globals.css";
 
-const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", weight: ["700", "800"] });
+// Titres : empattement doux et chaleureux (Fraunces) ; texte : Figtree, lisible et amical.
+const display = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", weight: ["500", "600", "700"], style: ["normal", "italic"] });
 const body = Figtree({ subsets: ["latin"], variable: "--font-figtree" });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0b0a10",
+};
 
 export function generateMetadata(): Metadata {
   const name = siteName();

@@ -47,6 +47,7 @@ export function SeatPicker({
         <li><span className="swatch picked" aria-hidden="true" />Votre choix</li>
       </ul>
 
+      <p className="hint seat-hint">Faites glisser le plan vers la gauche ou la droite pour voir toutes les places.</p>
       <div className="stage" aria-hidden="true">SCÈNE</div>
       <div className="seatmap-scroll" role="group" aria-label="Plan de la salle : choisissez vos places">
         <div className="seatmap">

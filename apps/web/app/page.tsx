@@ -1,11 +1,14 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { listEvents, prisma, type EventFilters } from "@rideau/db";
-import { Cover } from "@/components/Cover";
+import { HomeMotion } from "@/components/HomeMotion";
 import { TicketCard } from "@/components/TicketCard";
 
 export const dynamic = "force-dynamic";
 
 type SP = Record<string, string | undefined>;
+
+const MARQUEE = ["Concerts", "Théâtre", "Humour", "Sport", "Festivals", "Ciné-concert"];
 
 function toFilters(sp: SP): EventFilters {
   return {
@@ -37,11 +40,17 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
 
   return (
     <>
-      <section className="hero-dark">
+      <HomeMotion key={JSON.stringify(searchParams)} />
+      <section className="hero-dark" data-hero>
+        <div className="hero-bg" aria-hidden="true">
+          <div className="hb hb-scene" />
+          <div className="hb hb-beams" />
+          <div className="hb hb-shade" />
+        </div>
         <div className="wrap hero-grid">
-          <div>
+          <div className="hero-copy">
             <span className="kicker">Billetterie en ligne</span>
-            <h1>Vivez la <em>scène</em>.<br />Réservez en 3 clics.</h1>
+            <h1>Vivez la <em>scène</em>.<br />Réservez en 3&nbsp;clics.</h1>
             <p>Concerts, théâtre, humour, sport : choisissez votre soirée, payez en toute sécurité et recevez vos billets par e-mail.</p>
             <form className="search" role="search" action="/">
               <input type="search" name="q" defaultValue={searchParams.q} placeholder="Artiste, spectacle, salle ou ville" aria-label="Rechercher un spectacle" />
@@ -54,14 +63,35 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
             </ul>
           </div>
           <div className="hero-visual" aria-hidden="true">
-            <div className="hv hv-1"><Cover category="theatre" /></div>
-            <div className="hv hv-2"><Cover category="humour" /></div>
-            <div className="hv hv-3"><Cover category="concerts" /></div>
+            <div className="scene3d">
+              {([["hv-1", "/img/affiche-1.jpg", 350, 524], ["hv-3", "/img/affiche-2.jpg", 399, 501], ["hv-2", "/img/affiche-3.jpg", 547, 365]] as const).map(([cls, src, w, h]) => (
+                <div className={`hv ${cls}`} key={cls}>
+                  <div className="hv-face">
+                    <img src={src} width={w} height={h} alt="" decoding="async" />
+                    <span className="hv-shine" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+        <a className="scroll-cue" href="#spectacles" aria-label="Voir les spectacles"><span /></a>
       </section>
 
-      <div className="wrap">
+      <div className="marquee-clip" aria-hidden="true">
+        <div className="marquee">
+          <div className="marquee-track">
+            {[0, 1].map((g) => (
+              <div className="marquee-group" key={g}>
+                {[...MARQUEE, ...MARQUEE].map((t, i) => <span key={i}>{t}<b>✦</b></span>)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap" id="spectacles">
+      <h2 className="section-title reveal">À l&apos;affiche</h2>
       <nav className="chips" aria-label="Catégories">
         <Link className="chip" href={href(searchParams, { categorie: undefined, page: undefined })} aria-current={!searchParams.categorie}>Tout</Link>
         {categories.map((c) => (
@@ -103,7 +133,7 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
         </div>
       ) : (
         <div className="grid">
-          {result.events.map((e) => (
+          {result.events.map((e, i) => (
             <TicketCard
               key={e.id}
               slug={e.slug}
@@ -116,6 +146,7 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
               coverUrl={e.images[0]?.url}
               coverAlt={e.images[0]?.alt}
               fromPriceCents={e.fromPriceCents}
+              index={i}
             />
           ))}
         </div>
@@ -128,6 +159,16 @@ export default async function Home({ searchParams }: { searchParams: SP }) {
           {result.page < pages && <Link className="btn btn-ghost" href={href(searchParams, { page: String(result.page + 1) })}>Suivant</Link>}
         </nav>
       )}
+      </div>
+      <div className="wrap">
+      <section className="steps" aria-labelledby="steps-title">
+        <h2 id="steps-title" className="section-title reveal">Réserver, <em>tout simplement</em></h2>
+        <ol className="steps-list">
+          <li className="step reveal" style={{ "--i": 0 } as CSSProperties}><span className="step-n">1</span><h3>Choisissez</h3><p>Parcourez les spectacles, filtrez par ville, date ou prix et trouvez la soirée qui vous plaît.</p></li>
+          <li className="step reveal" style={{ "--i": 1 } as CSSProperties}><span className="step-n">2</span><h3>Réservez</h3><p>Vos places sont gardées 15 minutes le temps de régler, en toute sécurité.</p></li>
+          <li className="step reveal" style={{ "--i": 2 } as CSSProperties}><span className="step-n">3</span><h3>Profitez</h3><p>Vos billets arrivent par e-mail, à présenter sur votre téléphone à l&apos;entrée.</p></li>
+        </ol>
+      </section>
       </div>
     </>
   );

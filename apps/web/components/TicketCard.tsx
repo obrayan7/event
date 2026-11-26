@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { formatPrice, imageVariant } from "@rideau/db";
 import { Cover } from "./Cover";
@@ -13,6 +14,8 @@ type Props = {
   coverUrl?: string | null;
   coverAlt?: string | null;
   fromPriceCents: number | null;
+  /** Position dans la grille : décale l'apparition des cartes les unes après les autres. */
+  index?: number;
 };
 
 const badge = (d: Date) => {
@@ -26,6 +29,7 @@ const shortDate = (d: Date) =>
 export function TicketCard(p: Props) {
   const b = badge(p.startsAt);
   return (
+    <div className="tk-wrap reveal" style={{ "--i": (p.index ?? 0) % 6 } as CSSProperties}>
     <Link href={`/evenements/${p.slug}`} className="ticket">
       <div className="ticket-media">
         {p.coverUrl ? (
@@ -47,5 +51,6 @@ export function TicketCard(p: Props) {
         {p.fromPriceCents !== null ? <span>dès <strong>{formatPrice(p.fromPriceCents)}</strong></span> : <span>Bientôt</span>}
       </div>
     </Link>
+    </div>
   );
 }

@@ -6,8 +6,9 @@
   :root { --ink: #f1f0fa; --paper: #14131f; --card: #1d1c2c; --accent: #f0517f; --accent-ink: #14131f; --muted: #a3a2bb; --line: #34334a; --ok: #5cc2cb; --danger: #ff8a80; }
 }
 * { box-sizing: border-box; }
-html { color-scheme: light dark; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-figtree), system-ui, sans-serif; line-height: 1.5; }
+html { color-scheme: light dark; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, svg, video { max-width: 100%; }
+body { overflow-x: hidden; overflow-x: clip; margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-figtree), system-ui, sans-serif; line-height: 1.5; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 h1, h2 { margin: 0 0 12px; letter-spacing: -0.01em; }
@@ -45,19 +46,19 @@ button, .btn { display: inline-flex; align-items: center; justify-content: cente
 .alert { padding: 12px 16px; border-radius: var(--radius); border: 1.5px solid var(--danger); color: var(--danger); margin-bottom: 20px; }
 .hint { color: var(--muted); font-size: 0.88rem; font-weight: 400; }
 
-.images { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); margin-bottom: 20px; }
+.images { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr)); margin-bottom: 20px; }
 .img-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--paper); }
 .img-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
 .img-card .meta { padding: 8px 10px; display: grid; gap: 6px; font-size: 0.85rem; }
 .img-card .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-.login { min-height: 100vh; display: grid; place-items: center; padding: 20px; }
+.login { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 20px; }
 .login .card { width: 100%; max-width: 380px; margin: 0; }
 
 .subnav { background: var(--card); border-bottom: 1px solid var(--line); }
 .subnav .inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; overflow-x: auto; }
 .subnav a { padding: 12px 14px; text-decoration: none; color: var(--muted); font-weight: 600; white-space: nowrap; }
 .subnav a:hover { color: var(--ink); }
-.stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 24px; }
+.stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); margin-bottom: 24px; }
 .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
 .stat strong { display: block; font-size: 1.6rem; letter-spacing: -0.02em; }
 .stat span { color: var(--muted); font-size: 0.88rem; }
@@ -82,7 +83,7 @@ details.item > div { padding: 4px 16px 16px; }
 .notice { padding: 12px 16px; border-radius: var(--radius); border: 1.5px solid var(--ok); color: var(--ok); margin-bottom: 20px; }
 .kvA { display: grid; grid-template-columns: max-content 1fr; gap: 6px 22px; align-items: baseline; }
 .kvA > span:nth-child(odd) { color: var(--muted); font-size: 0.9rem; }
-.proofs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin: 12px 0; }
+.proofs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); margin: 12px 0; }
 .proofs figure { margin: 0; }
 .proofs img { width: 100%; max-height: 420px; object-fit: contain; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
 
@@ -106,7 +107,7 @@ details.item > div { padding: 4px 16px 16px; }
 .sm-seat.sel { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink); background: var(--ink); color: var(--paper); font-size: 0.85rem; }
 .sm-actions { display: grid; gap: 14px; }
 .sm-apply { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
-.sm-apply label { min-width: 280px; }
+.sm-apply label { min-width: min(280px, 100%); }
 .sm-more { display: flex; gap: 10px; flex-wrap: wrap; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -118,3 +119,37 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .topbar .btn-ghost { color: #fff; background: transparent; border-color: #3a3847; }
 .login-brand { background: #0b0a10; border-radius: 10px; padding: 16px; display: grid; place-items: center; margin-bottom: 18px; }
 .login-brand img { display: block; height: 44px; width: auto; }
+
+/* =====================================================================
+   MOBILE (iPhone / Android) : barre du haut, tableaux, formulaires, plan de salle
+   ===================================================================== */
+@media (max-width: 760px) {
+  .topbar .inner { height: auto; min-height: 58px; flex-wrap: wrap; gap: 6px 12px; padding: 8px 16px; }
+  .topbar form { flex-wrap: wrap; min-width: 0; }
+  .topbar .hint { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .subnav .inner { padding: 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .subnav .inner::-webkit-scrollbar { display: none; }
+  .subnav a { padding: 14px 12px; }
+  .container { padding: 20px 16px 64px; }
+  h1 { font-size: 1.35rem; }
+  .card { padding: 16px; }
+
+  /* Tableaux : défilement horizontal dans leur cadre au lieu d'élargir toute la page */
+  table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  th, td { padding: 10px 10px; }
+  th:first-child, td:first-child { white-space: nowrap; }
+
+  .kvA { grid-template-columns: 1fr; gap: 2px 0; }
+  .kvA > span:nth-child(odd) { margin-top: 8px; }
+  .row > * { max-width: 100%; }
+  .row .btn, .row button { flex: 1 1 auto; }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea { width: 100%; min-width: 0; max-width: 100%; font-size: 16px; } /* 16 px : iOS ne zoome plus au focus */
+  label[style] { max-width: 100% !important; }
+  .btn-sm { min-height: 40px; }
+  .tabs .tab { padding: 10px 14px; }
+  .sm-apply { align-items: stretch; }
+  .sm-apply > * { flex: 1 1 100%; }
+  .sm-seat { width: 32px; height: 32px; }
+  .scan-result { padding: 18px; }
+  .viewfinder { max-width: 100%; }
+}
